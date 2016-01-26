@@ -1,0 +1,82 @@
+pronterface: git clone https://github.com/kliment/Printrun.git
+slic3r: git clone git://github.com/alexrj/Slic3r; cd Slic3r; sudo cpan App::cpanminus; sudo perl Build.pl; sudo cpanm http://search.cpan.org/CPAN/authors/id/M/MS/MSTROUT/Moo-1.002000.tar.gz
+blender: http://www.blender.org/download/get-blender/
+openscad: sudo apt-get install openscad
+
+temperature: 185 seems to be ok, but higher seems to work out better (better self-ahesion, looks less "log cabin"-y)
+- apparetly I did up to 215 in the past; using 200 right now and it's working well
+
+here's the last command I saved:
+~/Dropbox/3dp/progs/Slic3r/slic3r.pl --load ~/Dropbox/3dp/slic3r.ini --load ~/Dropbox/3dp/slic3r_fast.ini parts_box_4.stl -o parts_box_4.gcode --fill-density=1 --top-solid-layers=0 --save parts_box_4.gcode.settings --fill-density=
+
+can add "--first-layer-temperature=185" to force it to wait; I usually leave that out and leave the hotend on.
+
+
+
+to do boxes faster:
+--skirts=0 --external-perimeter-speed=100% --first-layer-speed=50% --solid-infill-speed=80
+
+honeycomb fill-density of 0.2 broke down after just a few layers (layer height 0.4)
+
+195C seemed amazingly better than 185C -- 185 didn't end up joining layers together or lines together
+210C seems to work pretty well too and has fewer issues with the extruder?
+
+
+1kg PLA is roughly 800cm^2 or 330m for 1.75mm
+
+The M501 command will reload all soft settings from onboard permanent memory, and display them.
+The M503 command will display current settings.
+The M92 command and others, will adjust those current settings.
+The M500 command will save current settings to onboard permanent memory, for next reboot.
+
+>>>M501
+SENDING:M501
+echo:Using Default settings:
+echo:Steps per unit:
+echo:  M92 X119.00 Y119.00 Z2020.00 E102.00
+echo:Maximum feedrates (mm/s):
+echo:  M203 X200.00 Y200.00 Z10.00 E100.00
+echo:Maximum Acceleration (mm/s2):
+echo:  M201 X3000 Y3000 Z100 E10000
+echo:Acceleration: S=acceleration, T=retract acceleration
+echo:  M204 S1500.00 T1500.00
+echo:Advanced variables: S=Min feedrate (mm/s), T=Min travel feedrate (mm/s), B=minimum segment time (ms), X=maximum xY jerk (mm/s),  Z=maximum Z jerk (mm/s)
+echo:  M205 S0.00 T0.00 B20000 X20.00 Z0.40 E5.00
+echo:PID settings:
+echo:   M301 P22.20 I1.08 D114.00
+
+settings I like:
+M201 X1000 Y1000
+M203 Z6 E10
+M205 X0.5 Z0.0
+
+temporararily trying
+M201 X1500 Y1500
+M205 X1 Z0.1 E20
+M301 P30 I2 D60
+
+
+Building firmware [wip]:
+https://dl.dropboxusercontent.com/u/68081994/printrbot/Printrbot%20Firmware.pdf
+
+git clone git@github.com:kmod/Marlin
+# Install arduino software; I've done this on 1.0.5
+wget http://www.pjrc.com/teensy/td_118/teensyduino.64bit
+chmod +x teensyduino.64bit
+./teensyduino.64bit
+# Choose arduino location
+# choose no libraries
+# install
+
+Then to build:
+launch arduino
+open Marlin.pde in Marlin/Marlin
+change board to Teensy++ 2.0
+turn on verbose compilation
+look in the /tmp/build*.tmp directory for Marlin.cpp.hex
+
+
+To fix slant [wip]:
+- I think it's usually a matter of tightening the respective axis
+- use pliers to pull back towards the motor
+- then tighten the screw.  make sure line is hooked around clockwise so that it tightens with the screw
