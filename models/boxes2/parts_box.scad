@@ -1,12 +1,16 @@
-T=1;
-cube([100,65,T]);
-cube([100,T,50]);
-translate([0,65-T,0]) cube([100,T,50]);
-cube([T,65,50]);
-translate([100-T,0,0]) cube([T,65,50]);
+THICKNESS=1;
+DEPTH=100;
+WIDTH=65;
+HEIGHT=50;
 
-R=4;
-for (i = [1 : R]) {
-translate([i * 100/(R+1)-T/2,0,0]) cube([T,10,40]);
-translate([i* 100/(R+1)-T/2,55,0]) cube([T,10,40]);
+cube([DEPTH,WIDTH,THICKNESS]);
+cube([DEPTH,THICKNESS,HEIGHT]);
+translate([0,WIDTH-THICKNESS,0]) cube([DEPTH,THICKNESS,HEIGHT]);
+cube([THICKNESS,WIDTH,HEIGHT]);
+translate([DEPTH-THICKNESS,0,0]) cube([THICKNESS,WIDTH,HEIGHT]);
+
+DIVIDERS=4;
+for (i = [1 : DIVIDERS]) {
+translate([i * DEPTH/(DIVIDERS+1)-THICKNESS/2,0,0]) cube([THICKNESS,10,40]);
+translate([i* DEPTH/(DIVIDERS+1)-THICKNESS/2,55,0]) cube([THICKNESS,10,40]);
 }
